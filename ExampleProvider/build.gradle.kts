@@ -1,19 +1,52 @@
 import com.lagradost.cloudstream3.gradle.CloudstreamExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
     repositories {
         google()
         mavenCentral()
+        maven("https://jitpack.io")
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.1.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10")
+        classpath("com.github.recloudstream:gradle:-SNAPSHOT")
     }
 }
 
-plugins {
-    id("com.android.library") version "8.1.1" apply false
-    id("org.jetbrains.kotlin.android") version "1.9.10" apply false
-    id("com.lagradost.cloudstream3.gradle") version "0.1.0"
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://jitpack.io")
+    }
 }
 
-cloudstream {
-    // Menghubungkan ke folder provider baru
-    setDest(file("OtakudesuProvider"))
+fun Project.cloudstream(configuration: CloudstreamExtension.() -> Unit) =
+    extensions.getByName<CloudstreamExtension>("cloudstream").configuration()
+
+subprojects {
+    apply(plugin = "com.android.library")
+    apply(plugin = "kotlin-android")
+    apply(plugin = "com.lagradost.cloudstream3.gradle")
+
+    cloudstream {
+        // Biarkan menggunakan folder bawaan 'ExampleProvider'
+        setDest(file("../builds"))
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            freeCompilerArgs = freeCompilerArgs + listOf(
+                "-Xopt-in=kotlin.RequiresOptIn",
+                "-Xopt-in=com.lagradost.cloudstream3.PragmaticApi"
+            )
+        }
+    }
+}
+
+task<Delete>("clean") {
+    delete(rootProject.buildDir)
 }
