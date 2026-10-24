@@ -1,10 +1,10 @@
-package com.otakudesu
+package com.example
 
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.*
 import com.lagradost.cloudstream3.LoadResponse.Companion.addEpisodes
 
-class OtakudesuProvider : MainAPI() {
+class ExampleProvider : MainAPI() {
     override var mainUrl = "https://otakudesu.cloud" 
     override var name = "Otakudesu"
     override val hasMainPage = true
