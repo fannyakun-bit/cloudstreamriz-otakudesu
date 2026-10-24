@@ -1,24 +1,19 @@
-// use an integer for version numbers
-version = 1
+import com.lagradost.cloudstream3.gradle.CloudstreamExtension
 
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id("com.android.library") version "8.1.1" apply false
+    id("org.jetbrains.kotlin.android") version "1.9.10" apply false
+    id("com.lagradost.cloudstream3.gradle") version "0.1.0"
+}
 
 cloudstream {
-    // All of these properties are optional, you can safely remove them
-
-    description = "Lorem Ipsum"
-    authors = listOf("Cloudburst")
-
-    /**
-    * Status int as the following:
-    * 0: Down
-    * 1: Ok
-    * 2: Slow
-    * 3: Beta only
-    * */
-    status = 1 // will be 3 if unspecified
-
-    // List of video source types. Users are able to filter for extensions in a given category.
-    // You can find a list of avaliable types here:
-    // https://recloudstream.github.io/cloudstream/html/app/com.lagradost.cloudstream3/-tv-type/index.html
-    tvTypes = listOf("Others")
+    // Menghubungkan ke folder provider baru
+    setDest(file("OtakudesuProvider"))
 }
